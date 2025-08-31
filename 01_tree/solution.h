@@ -6,6 +6,7 @@
 #define SOLUTION_H
 #include <functional>
 #include <memory>
+#include <queue>
 
 template <typename T>
 struct TreeNode {
@@ -44,6 +45,27 @@ void PostTraversal(std::shared_ptr<TreeNode<T>> root, const std::function<void(c
     PostTraversal(root->left, callback);
     PostTraversal(root->right, callback);
     callback(root->data);
+}
+template <typename T>
+void LevelOrderTraversal(std::shared_ptr<TreeNode<T>> root, const std::function<void(const T&)>& callback) {
+    if (root == nullptr) {
+        return;
+    }
+    auto queue = std::queue<std::shared_ptr<TreeNode<T>>>();
+    queue.push(root);
+    // 利用队列的顺序特性, 每次只处理当前节点及其子节点, 实现层序遍历
+    while (!queue.empty()) {
+        auto node = queue.front();
+        queue.pop();
+
+        callback(node->data);
+        if (node->left) {
+            queue.push(node->left);
+        }
+        if (node->right) {
+            queue.push(node->right);
+        }
+    }
 }
 
 class Solution {

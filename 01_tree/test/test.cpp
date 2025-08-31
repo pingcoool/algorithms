@@ -15,6 +15,14 @@ class MyTestSuite : public ::testing::Test {
 protected:
     void SetUp() override {
         // 测试前的设置代码
+       //       1
+       //     /   \
+       //    /     \
+       //   2       6
+       //  / \     / \
+       // 3   4   7   9
+       //    /     \
+       //   5       8
         root_ = std::make_shared<TreeNode<int> >(1);
         root_->left = std::make_shared<TreeNode<int> >(2);
         root_->left->left = std::make_shared<TreeNode<int> >(3);
@@ -51,6 +59,13 @@ TEST_F(MyTestSuite, InorderTraversal) {
 // 后序遍历
 TEST_F(MyTestSuite, PostTraversal) {
     PostTraversal<int>(root_, [](const int& t) {
+        printf("%d ", t);
+    });
+}
+
+// 层序遍历
+TEST_F(MyTestSuite, LevelOrderTraversal) {
+    LevelOrderTraversal<int>(root_, [](const int& t) {
         printf("%d ", t);
     });
 }
