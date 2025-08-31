@@ -7,6 +7,7 @@
 #include <functional>
 #include <memory>
 #include <queue>
+#include <string>
 
 template <typename T>
 struct TreeNode {
@@ -67,6 +68,46 @@ void LevelOrderTraversal(std::shared_ptr<TreeNode<T>> root, const std::function<
         }
     }
 }
+
+/***
+ *  思路: 找出字符串的组织逻辑: 根(左, 右), 按照这个组织逻辑分治解析
+ *        注意需要在递归方法中返回已经处理过的位置信息
+ */
+template <typename T>
+size_t TreeFromString4(const std::string& str, size_t i, size_t j, const std::function<void(const T&)>& callback) {
+    if (j<i) {
+        return 0;
+    }
+
+    // 中
+    size_t cur = i;
+    // root 节点为空
+    if (!isdigit(str[i])) {
+        callback('x');
+        return cur;
+    }
+    // root 节点非空
+    callback(str[cur]);
+    ++cur;
+
+    // 左
+    if (str[cur] == '(' && cur<=j) {
+        cur = TreeFromString4(str, cur+1, j, callback);
+    }
+
+    // 右
+    if (str[cur] == ',' && cur<=j) {
+        cur = TreeFromString4(str, cur+1, j, callback);
+        ++cur; // 处理 )
+    }
+    return cur;
+}
+
+template <typename T>
+void TreeFromString(const std::string& str, const std::function<void(const T&)>& callback) {
+    TreeFromString4(str, 0, str.size(), callback);
+}
+
 
 class Solution {
 public:

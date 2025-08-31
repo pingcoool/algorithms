@@ -69,3 +69,14 @@ TEST_F(MyTestSuite, LevelOrderTraversal) {
         printf("%d ", t);
     });
 }
+
+// 字符串表示
+TEST_F(MyTestSuite, TreeFromString) {
+    TreeFromString<int>("1(2(,4(5,)),3(6(,8),7))", [](const int& t) {
+        printf("%c ", t);
+    });
+    printf("\n");
+    TreeFromString<int>("1(2,3)", [](const int& t) {
+        printf("%c ", t);
+    });
+}
