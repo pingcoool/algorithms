@@ -80,3 +80,17 @@ TEST_F(MyTestSuite, TreeFromString) {
         printf("%c ", t);
     });
 }
+
+// 从前序和中序遍历构建二叉树
+TEST_F(MyTestSuite, BuildTreeFromPreAndIn) {
+    std::vector<int> pre_order{1,2,3,4,5,6,7,8,9};
+    std::vector<int> in_order{3,2,5,4,1,7,8,6,9};
+
+    //  后续遍历
+    auto root = BuildTreeFromPreAndIn<int>(pre_order, in_order);
+    PostTraversal<int>(root, [](const int& t) {
+        printf("%d ", t);
+    });
+
+}
+
