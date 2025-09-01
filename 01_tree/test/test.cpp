@@ -109,6 +109,22 @@ TEST_F(MyTestSuite, BuildTreeFromPreAndIn) {
     PostTraversal<int>(root, [](const int& t) {
         printf("%d ", t);
     });
+}
 
+// 二叉树序列化
+TEST_F(MyTestSuite, SerializeTree) {
+    auto res  = SerializeTree<int>(root_);
+    printf("%s\n", res.c_str());
+}
+
+// 二叉树反序列化
+TEST_F(MyTestSuite, DeserializeTree) {
+    std::string str = "1,2,3,#,#,4,5,#,#,#,6,7,#,8,#,#,9,#,#,";
+    size_t index = 0;
+    auto root = DeserializeTree<int>(str, index);
+    PreorderTraversal<int>(root, [](const int& t) {
+        printf("%d ", t);
+    }
+);
 }
 

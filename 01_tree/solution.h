@@ -245,6 +245,45 @@ std::shared_ptr<TreeNode<T> > BuildTreeFromPreAndIn(const std::vector<T> pre_ord
     return BuildTreeFromPreAndIn(pre_order, 0, pre_order.size()-1, in_order, 0, in_order.size()-1);
 }
 
+
+/***
+ * 序列化二叉树
+ * 思路: 前序遍历
+ */
+template <typename T>
+std::string SerializeTree(std::shared_ptr<TreeNode<T>> root) {
+    std::string res;
+    if (root == nullptr) {
+        res += "#,";
+        return res;
+    }
+    res += std::to_string(root->data);
+    res += ",";
+    res += SerializeTree(root->left);
+    res += SerializeTree(root->right);
+    return res;
+}
+
+
+/***
+ * 反序列化二叉树
+ * 思路: 前序遍历
+ */
+template <typename T>
+std::shared_ptr<TreeNode<T>> DeserializeTree(const std::string& str, size_t& index) {
+    assert(index < str.size());
+    if (str.at(index) == '#') {
+        index += 2;
+        return nullptr;
+    }
+    assert(isdigit(str.at(index)));
+    auto root = std::make_shared<TreeNode<T>>(str.at(index) - '0');
+    index += 2;
+    root->left = DeserializeTree<T>(str, index);
+    root->right = DeserializeTree<T>(str, index);
+    return root;
+}
+
 class Solution {
 public:
     static int test_func(int a, int b) {
