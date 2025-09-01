@@ -49,6 +49,12 @@ TEST_F(MyTestSuite, PreorderTraversal) {
     });
 }
 
+TEST_F(MyTestSuite, PreorderTraversalStack) {
+    PreorderTraversalStack<int>(root_, [](const int& t) {
+        printf("%d ", t);
+    });
+}
+
 // 中序遍历
 TEST_F(MyTestSuite, InorderTraversal) {
     InorderTraversal<int>(root_, [](const int& t) {
@@ -56,9 +62,21 @@ TEST_F(MyTestSuite, InorderTraversal) {
     });
 }
 
+TEST_F(MyTestSuite, InorderTraversalStack) {
+    InorderTraversalStack<int>(root_, [](const int& t) {
+        printf("%d ", t);
+    });
+}
+
 // 后序遍历
 TEST_F(MyTestSuite, PostTraversal) {
     PostTraversal<int>(root_, [](const int& t) {
+        printf("%d ", t);
+    });
+}
+
+TEST_F(MyTestSuite, PostTraversalStack) {
+    PostTraversalStack<int>(root_, [](const int& t) {
         printf("%d ", t);
     });
 }

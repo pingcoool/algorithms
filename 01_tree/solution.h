@@ -8,6 +8,7 @@
 #include <functional>
 #include <memory>
 #include <queue>
+#include <stack>
 #include <string>
 
 template <typename T>
@@ -35,6 +36,30 @@ void PreorderTraversal(std::shared_ptr<TreeNode<T>> root, const std::function<vo
 }
 
 /***
+ * 二叉树前序遍历, 不使用递归
+ * 思路: 根出栈，右进栈，左进栈
+ */
+template <typename T>
+void PreorderTraversalStack(std::shared_ptr<TreeNode<T>> root, const std::function<void(const T&)>& callback) {
+    if (root == nullptr) {
+        return;
+    }
+    std::stack<std::shared_ptr<TreeNode<T>>> s;
+    s.push(root);
+    while (!s.empty()) {
+        auto cur = s.top();
+        s.pop();
+        callback(cur->data);
+        if (cur->right != nullptr) {
+            s.push(cur->right);
+        }
+        if (cur->left != nullptr) {
+            s.push(cur->left);
+        }
+    }
+}
+
+/***
  * 二叉树中序遍历
  */
 template <typename T>
@@ -48,6 +73,33 @@ void InorderTraversal(std::shared_ptr<TreeNode<T>> root, const std::function<voi
 }
 
 /***
+ * 二叉树中序遍历, 不使用递归
+ * 思路: 左沿线进栈，出栈后处理右节点
+ */
+template <typename T>
+void InorderTraversalStack(std::shared_ptr<TreeNode<T>> root, const std::function<void(const T&)>& callback) {
+    if (root == nullptr) {
+        return;
+    }
+    std::stack<std::shared_ptr<TreeNode<T>>> s;
+    auto cur = root;
+    while (cur != nullptr || !s.empty()) {
+        // 循环找最左
+        while (cur != nullptr) {
+            s.push(cur);
+            cur = cur->left;
+        }
+        // 打印最左节点
+        auto node = s.top();
+        s.pop();
+        callback(node->data);
+
+        // 出栈后, 处理右节点
+        cur = node->right;
+    }
+}
+
+/***
  * 二叉树后序遍历
  */
 template <typename T>
@@ -58,6 +110,35 @@ void PostTraversal(std::shared_ptr<TreeNode<T>> root, const std::function<void(c
     PostTraversal(root->left, callback);
     PostTraversal(root->right, callback);
     callback(root->data);
+}
+
+/***
+ * 二叉树后序遍历, 不使用递归
+ * 思路: 双栈法, 左右根 为逆序的 根右左
+ */
+template <typename T>
+void PostTraversalStack(std::shared_ptr<TreeNode<T>> root, const std::function<void(const T&)>& callback) {
+    if (root == nullptr) {
+        return;
+    }
+    std::stack<std::shared_ptr<TreeNode<T>>> s;
+    std::stack<std::shared_ptr<TreeNode<T>>> res;
+    s.push(root);
+    while (!s.empty()) {
+        auto cur = s.top();
+        s.pop();
+        res.push(cur);
+        if (cur->left != nullptr) {
+            s.push(cur->left);
+        }
+        if (cur->right != nullptr) {
+            s.push(cur->right);
+        }
+    }
+    while (!res.empty()) {
+        callback(res.top()->data);
+        res.pop();
+    }
 }
 
 /***
